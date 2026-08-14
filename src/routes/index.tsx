@@ -18,6 +18,8 @@ import { RosterSidebar } from "@/components/guild/RosterSidebar";
 import { PartyBoard } from "@/components/guild/PartyBoard";
 import { AddMembersPanel } from "@/components/guild/AddMembersPanel";
 import { SignInDialog } from "@/components/guild/SignInDialog";
+import baiLogo from "@/assets/bai-logo.png.asset.json";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
