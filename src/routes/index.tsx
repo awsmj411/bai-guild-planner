@@ -34,7 +34,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Guild roster and drag-and-drop raid party planner for Elite and Sub-Battlefield teams.",
+          "Manage the BAI Guild roster and build Elite and Sub-Battlefield raid parties across 8 teams of 5 slots.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
