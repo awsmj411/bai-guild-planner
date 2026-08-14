@@ -18,6 +18,8 @@ import { RosterSidebar } from "@/components/guild/RosterSidebar";
 import { PartyBoard } from "@/components/guild/PartyBoard";
 import { AddMembersPanel } from "@/components/guild/AddMembersPanel";
 import { SignInDialog } from "@/components/guild/SignInDialog";
+import baiLogo from "@/assets/bai-logo.png.asset.json";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -132,10 +134,18 @@ function GuildPage() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-guild-team text-guild-team-foreground">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-3">
-          <div>
-            <h1 className="text-lg font-bold uppercase tracking-wide">BAI Guild</h1>
-            <p className="text-xs opacity-80">Roster &amp; Raid Party Builder</p>
+          <div className="flex items-center gap-3">
+            <h1 className="sr-only">BAI Guild Roster &amp; Raid Parties</h1>
+            <img
+              src={baiLogo.url}
+              alt="BAI Guild logo"
+              className="h-11 w-auto"
+            />
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] opacity-85">
+              Guild Roster &amp; Raid Parties
+            </p>
           </div>
+
           {isAdmin ? (
             <Button size="sm" variant="secondary" onClick={signOut}>
               Sign out
