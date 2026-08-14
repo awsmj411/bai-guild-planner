@@ -135,6 +135,7 @@ function GuildPage() {
       <header className="border-b border-border bg-guild-team text-guild-team-foreground">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
+            <h1 className="sr-only">BAI Guild Roster &amp; Raid Parties</h1>
             <img
               src={baiLogo.url}
               alt="BAI Guild logo"
