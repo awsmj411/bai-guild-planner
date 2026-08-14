@@ -139,7 +139,7 @@ function GuildPage() {
             <img
               src={baiLogo.url}
               alt="BAI Guild logo"
-              className="h-9 w-auto drop-shadow-sm"
+              className="h-11 w-auto"
             />
             <p className="text-xs font-semibold uppercase tracking-[0.18em] opacity-85">
               Guild Roster &amp; Raid Parties
