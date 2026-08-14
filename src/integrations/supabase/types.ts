@@ -14,16 +14,112 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      members: {
+        Row: {
+          created_at: string
+          id: string
+          job_class: Database["public"]["Enums"]["job_class"]
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          job_class: Database["public"]["Enums"]["job_class"]
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          job_class?: Database["public"]["Enums"]["job_class"]
+          name?: string
+        }
+        Relationships: []
+      }
+      party_assignments: {
+        Row: {
+          created_at: string
+          id: string
+          member_id: string
+          section: Database["public"]["Enums"]["raid_section"]
+          slot_index: number
+          team_index: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          member_id: string
+          section: Database["public"]["Enums"]["raid_section"]
+          slot_index: number
+          team_index: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          member_id?: string
+          section?: Database["public"]["Enums"]["raid_section"]
+          slot_index?: number
+          team_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "party_assignments_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: true
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin"
+      job_class:
+        | "Lord Knight"
+        | "Paladin"
+        | "Sniper"
+        | "Minstrel"
+        | "Gypsy"
+        | "High Priest"
+        | "Champion"
+        | "Whitesmith"
+        | "Biochemist"
+        | "High Wizard"
+        | "Professor"
+        | "Doram"
+        | "Gunslinger"
+        | "Stalker"
+        | "Assassin Cross"
+      raid_section: "elite" | "sub"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +246,26 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin"],
+      job_class: [
+        "Lord Knight",
+        "Paladin",
+        "Sniper",
+        "Minstrel",
+        "Gypsy",
+        "High Priest",
+        "Champion",
+        "Whitesmith",
+        "Biochemist",
+        "High Wizard",
+        "Professor",
+        "Doram",
+        "Gunslinger",
+        "Stalker",
+        "Assassin Cross",
+      ],
+      raid_section: ["elite", "sub"],
+    },
   },
 } as const
