@@ -71,33 +71,35 @@
 
 :root {
   --radius: 0.375rem;
-  --background: oklch(0.97 0.008 120);
-  --foreground: oklch(0.22 0.03 150);
-  --guild-bar: oklch(0.72 0.19 142);
-  --guild-bar-foreground: oklch(0.99 0 0);
-  --guild-team: oklch(0.38 0.08 152);
-  --guild-team-foreground: oklch(0.98 0.01 140);
-  --guild-slot: oklch(0.99 0.004 120);
-  --guild-slot-border: oklch(0.88 0.02 140);
+  /* Palette lifted from the BAI logo: lime face, forest shadow, cream highlight */
+  --background: oklch(0.977 0.024 110);
+  --foreground: oklch(0.27 0.075 148);
+  --guild-bar: oklch(0.745 0.166 118);
+  --guild-bar-foreground: oklch(0.24 0.08 148);
+  --guild-team: oklch(0.36 0.098 148);
+  --guild-team-foreground: oklch(0.977 0.03 110);
+  --guild-slot: oklch(0.995 0.012 110);
+  --guild-slot-border: oklch(0.9 0.045 115);
   --guild-surface: oklch(1 0 0);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.27 0.075 148);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.52 0.14 148);
-  --primary-foreground: oklch(0.99 0 0);
+  --popover-foreground: oklch(0.27 0.075 148);
+  --primary: oklch(0.36 0.098 148);
+  --primary-foreground: oklch(0.977 0.03 110);
 
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.95 0.04 112);
+  --secondary-foreground: oklch(0.32 0.09 148);
+  --muted: oklch(0.955 0.032 112);
+  --muted-foreground: oklch(0.48 0.055 145);
+  --accent: oklch(0.745 0.166 118);
+  --accent-foreground: oklch(0.24 0.08 148);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
+  --border: oklch(0.9 0.045 115);
+  --input: oklch(0.9 0.045 115);
+
   --ring: oklch(0.704 0.04 256.788);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
