@@ -18,6 +18,47 @@ export const JOB_CLASSES = [
 
 export type JobClass = (typeof JOB_CLASSES)[number];
 
+export const FIRST_JOBS = [
+  "Swordsman",
+  "Thief",
+  "Merchant",
+  "Archer",
+  "Magician",
+  "Acolyte",
+  "Doram",
+  "Gunslinger",
+] as const;
+
+export type FirstJob = (typeof FIRST_JOBS)[number];
+
+export const SECOND_TO_FIRST: Record<JobClass, FirstJob> = {
+  "Lord Knight": "Swordsman",
+  Paladin: "Swordsman",
+  "Assassin Cross": "Thief",
+  Stalker: "Thief",
+  Whitesmith: "Merchant",
+  Biochemist: "Merchant",
+  Sniper: "Archer",
+  Gypsy: "Archer",
+  Minstrel: "Archer",
+  "High Wizard": "Magician",
+  Professor: "Magician",
+  "High Priest": "Acolyte",
+  Champion: "Acolyte",
+  Doram: "Doram",
+  Gunslinger: "Gunslinger",
+};
+
+export function firstJobOf(jobClass: JobClass): FirstJob {
+  return SECOND_TO_FIRST[jobClass] ?? "Swordsman";
+}
+
+/** Tailwind-safe token slug used for the --job-* color tokens. */
+export function jobToken(jobClass: JobClass): string {
+  return firstJobOf(jobClass).toLowerCase();
+}
+
+
 export const SECTIONS = [
   { key: "elite", label: "Elite Battlefield Raid Party" },
   { key: "sub", label: "Sub-Battlefield Raid Party" },
