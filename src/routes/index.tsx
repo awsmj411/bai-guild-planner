@@ -63,6 +63,8 @@ function GuildPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
   const [includeAssigned, setIncludeAssigned] = useState(false);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setIsAdmin(!!data.session));
