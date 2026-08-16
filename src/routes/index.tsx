@@ -211,7 +211,15 @@ function GuildPage() {
             ))}
           </div>
         </main>
+        <DragOverlay dropAnimation={{ duration: 180, easing: "cubic-bezier(0.2,0,0,1)" }}>
+          {draggingId && membersById.get(draggingId) ? (
+            <div className="w-56 rounded-md border border-border bg-guild-surface shadow-lift">
+              <MemberCard member={membersById.get(draggingId)!} compact />
+            </div>
+          ) : null}
+        </DragOverlay>
       </DndContext>
+
 
       <SignInDialog open={signInOpen} onOpenChange={setSignInOpen} />
     </div>
