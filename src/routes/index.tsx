@@ -171,7 +171,13 @@ function GuildPage() {
         </div>
       </header>
 
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+      <DndContext
+        sensors={sensors}
+        onDragStart={(e: DragStartEvent) => setDraggingId(String(e.active.id))}
+        onDragCancel={() => setDraggingId(null)}
+        onDragEnd={handleDragEnd}
+      >
+
         <main className="mx-auto flex max-w-[1500px] flex-col gap-4 px-4 py-4 lg:flex-row">
           <RosterSidebar
             members={members}
