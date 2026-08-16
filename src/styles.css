@@ -66,56 +66,73 @@
   --color-guild-slot: var(--guild-slot);
   --color-guild-slot-border: var(--guild-slot-border);
   --color-guild-surface: var(--guild-surface);
+  --shadow-elegant: var(--shadow-elegant);
+  --shadow-lift: var(--shadow-lift);
 }
 
 
 :root {
-  --radius: 0.375rem;
-  /* Palette lifted from the BAI logo: lime face, forest shadow, cream highlight */
-  --background: oklch(0.977 0.024 110);
-  --foreground: oklch(0.27 0.075 148);
-  --guild-bar: oklch(0.745 0.166 118);
-  --guild-bar-foreground: oklch(0.24 0.08 148);
-  --guild-team: oklch(0.36 0.098 148);
-  --guild-team-foreground: oklch(0.977 0.03 110);
-  --guild-slot: oklch(0.995 0.012 110);
-  --guild-slot-border: oklch(0.9 0.045 115);
-  --guild-surface: oklch(1 0 0);
+  color-scheme: dark;
+  --radius: 0.5rem;
+  /* Dark palette derived from the BAI logo: lime accent on deep forest charcoal */
+  --background: oklch(0.19 0.021 150);
+  --foreground: oklch(0.955 0.014 110);
+  --guild-bar: oklch(0.315 0.055 145);
+  --guild-bar-foreground: oklch(0.9 0.14 118);
+  --guild-team: oklch(0.265 0.04 148);
+  --guild-team-foreground: oklch(0.93 0.055 115);
+  --guild-slot: oklch(0.235 0.024 150);
+  --guild-slot-border: oklch(0.33 0.028 150);
+  --guild-surface: oklch(0.245 0.026 150);
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.27 0.075 148);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.27 0.075 148);
-  --primary: oklch(0.36 0.098 148);
-  --primary-foreground: oklch(0.977 0.03 110);
+  --shadow-elegant: 0 1px 2px oklch(0 0 0 / 0.35), 0 8px 24px -14px oklch(0 0 0 / 0.6);
+  --shadow-lift: 0 12px 30px -10px oklch(0 0 0 / 0.65);
 
-  --secondary: oklch(0.95 0.04 112);
-  --secondary-foreground: oklch(0.32 0.09 148);
-  --muted: oklch(0.955 0.032 112);
-  --muted-foreground: oklch(0.48 0.055 145);
-  --accent: oklch(0.745 0.166 118);
-  --accent-foreground: oklch(0.24 0.08 148);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.9 0.045 115);
-  --input: oklch(0.9 0.045 115);
+  /* First-job accent hues, tuned for dark surfaces */
+  --job-swordsman: oklch(0.66 0.17 25);
+  --job-thief: oklch(0.68 0.15 300);
+  --job-merchant: oklch(0.76 0.15 75);
+  --job-archer: oklch(0.78 0.16 130);
+  --job-magician: oklch(0.68 0.15 255);
+  --job-acolyte: oklch(0.86 0.09 95);
+  --job-doram: oklch(0.74 0.14 350);
+  --job-gunslinger: oklch(0.72 0.11 200);
 
-  --ring: oklch(0.745 0.166 118);
-  --chart-1: oklch(0.745 0.166 118);
-  --chart-2: oklch(0.36 0.098 148);
-  --chart-3: oklch(0.6 0.13 135);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.48 0.055 145);
-  --sidebar: oklch(0.99 0.016 110);
-  --sidebar-foreground: oklch(0.27 0.075 148);
-  --sidebar-primary: oklch(0.36 0.098 148);
-  --sidebar-primary-foreground: oklch(0.977 0.03 110);
-  --sidebar-accent: oklch(0.95 0.04 112);
-  --sidebar-accent-foreground: oklch(0.32 0.09 148);
-  --sidebar-border: oklch(0.9 0.045 115);
-  --sidebar-ring: oklch(0.745 0.166 118);
+  --card: oklch(0.245 0.026 150);
+  --card-foreground: oklch(0.955 0.014 110);
+  --popover: oklch(0.235 0.024 150);
+  --popover-foreground: oklch(0.955 0.014 110);
+  --primary: oklch(0.8 0.16 118);
+  --primary-foreground: oklch(0.21 0.05 148);
+
+  --secondary: oklch(0.3 0.03 150);
+  --secondary-foreground: oklch(0.95 0.02 112);
+  --muted: oklch(0.29 0.026 150);
+  --muted-foreground: oklch(0.72 0.024 145);
+  --accent: oklch(0.34 0.05 145);
+  --accent-foreground: oklch(0.93 0.1 118);
+  --destructive: oklch(0.62 0.2 25);
+  --destructive-foreground: oklch(0.98 0.01 250);
+  --border: oklch(0.33 0.028 150);
+  --input: oklch(0.33 0.028 150);
+
+  --ring: oklch(0.8 0.16 118);
+  --chart-1: oklch(0.8 0.16 118);
+  --chart-2: oklch(0.62 0.11 148);
+  --chart-3: oklch(0.7 0.13 135);
+  --chart-4: oklch(0.83 0.19 84);
+  --chart-5: oklch(0.72 0.05 145);
+  --sidebar: oklch(0.225 0.024 150);
+  --sidebar-foreground: oklch(0.955 0.014 110);
+  --sidebar-primary: oklch(0.8 0.16 118);
+  --sidebar-primary-foreground: oklch(0.21 0.05 148);
+  --sidebar-accent: oklch(0.3 0.03 150);
+  --sidebar-accent-foreground: oklch(0.95 0.02 112);
+  --sidebar-border: oklch(0.33 0.028 150);
+  --sidebar-ring: oklch(0.8 0.16 118);
 
 }
+
 
 .dark {
   --background: oklch(0.129 0.042 264.695);
