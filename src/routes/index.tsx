@@ -88,7 +88,9 @@ function GuildPage() {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
   async function handleDragEnd(event: DragEndEvent) {
+    setDraggingId(null);
     if (!isAdmin || !event.over) return;
+
     const memberId = String(event.active.id);
     const overId = String(event.over.id);
     try {
