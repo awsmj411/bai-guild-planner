@@ -2,7 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { DndContext, PointerSensor, useSensor, useSensors, type DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+  type DragStartEvent,
+} from "@dnd-kit/core";
+
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,7 +24,7 @@ import {
   unassignMember,
 } from "@/lib/guild.functions";
 import { RosterSidebar } from "@/components/guild/RosterSidebar";
-import { PartyBoard } from "@/components/guild/PartyBoard";
+import { PartyBoard, MemberCard } from "@/components/guild/PartyBoard";
 import { AddMembersPanel } from "@/components/guild/AddMembersPanel";
 import { SignInDialog } from "@/components/guild/SignInDialog";
 import baiLogo from "@/assets/bai-logo.png.asset.json";
@@ -54,6 +63,8 @@ function GuildPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
   const [includeAssigned, setIncludeAssigned] = useState(false);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setIsAdmin(!!data.session));
@@ -79,7 +90,9 @@ function GuildPage() {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
   async function handleDragEnd(event: DragEndEvent) {
+    setDraggingId(null);
     if (!isAdmin || !event.over) return;
+
     const memberId = String(event.active.id);
     const overId = String(event.over.id);
     try {
@@ -158,7 +171,13 @@ function GuildPage() {
         </div>
       </header>
 
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+      <DndContext
+        sensors={sensors}
+        onDragStart={(e: DragStartEvent) => setDraggingId(String(e.active.id))}
+        onDragCancel={() => setDraggingId(null)}
+        onDragEnd={handleDragEnd}
+      >
+
         <main className="mx-auto flex max-w-[1500px] flex-col gap-4 px-4 py-4 lg:flex-row">
           <RosterSidebar
             members={members}
@@ -192,7 +211,15 @@ function GuildPage() {
             ))}
           </div>
         </main>
+        <DragOverlay dropAnimation={{ duration: 180, easing: "cubic-bezier(0.2,0,0,1)" }}>
+          {draggingId && membersById.get(draggingId) ? (
+            <div className="w-56 rounded-md border border-border bg-guild-surface shadow-lift">
+              <MemberCard member={membersById.get(draggingId)!} compact />
+            </div>
+          ) : null}
+        </DragOverlay>
       </DndContext>
+
 
       <SignInDialog open={signInOpen} onOpenChange={setSignInOpen} />
     </div>
