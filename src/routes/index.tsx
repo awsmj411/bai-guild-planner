@@ -24,7 +24,7 @@ import {
   unassignMember,
 } from "@/lib/guild.functions";
 import { RosterSidebar } from "@/components/guild/RosterSidebar";
-import { PartyBoard } from "@/components/guild/PartyBoard";
+import { PartyBoard, MemberCard } from "@/components/guild/PartyBoard";
 import { AddMembersPanel } from "@/components/guild/AddMembersPanel";
 import { SignInDialog } from "@/components/guild/SignInDialog";
 import baiLogo from "@/assets/bai-logo.png.asset.json";
