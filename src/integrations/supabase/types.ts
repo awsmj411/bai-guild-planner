@@ -14,6 +14,246 @@ export type Database = {
   }
   public: {
     Tables: {
+      allocations: {
+        Row: {
+          auction_id: string
+          created_at: string
+          flag_note: string | null
+          id: string
+          ign: string
+          item_id: string
+          participant_id: string | null
+          quantity: number
+          queue_index: number
+          status: Database["public"]["Enums"]["allocation_status"]
+          superseded_at: string | null
+          superseded_reason:
+            | Database["public"]["Enums"]["removal_reason"]
+            | null
+          supersedes_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          auction_id: string
+          created_at?: string
+          flag_note?: string | null
+          id?: string
+          ign: string
+          item_id: string
+          participant_id?: string | null
+          quantity?: number
+          queue_index?: number
+          status?: Database["public"]["Enums"]["allocation_status"]
+          superseded_at?: string | null
+          superseded_reason?:
+            | Database["public"]["Enums"]["removal_reason"]
+            | null
+          supersedes_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          auction_id?: string
+          created_at?: string
+          flag_note?: string | null
+          id?: string
+          ign?: string
+          item_id?: string
+          participant_id?: string | null
+          quantity?: number
+          queue_index?: number
+          status?: Database["public"]["Enums"]["allocation_status"]
+          superseded_at?: string | null
+          superseded_reason?:
+            | Database["public"]["Enums"]["removal_reason"]
+            | null
+          supersedes_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "allocations_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "allocations_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "auction_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "allocations_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "auction_participants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "allocations_supersedes_id_fkey"
+            columns: ["supersedes_id"]
+            isOneToOne: false
+            referencedRelation: "allocations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      auction_events: {
+        Row: {
+          actor: string | null
+          auction_id: string
+          created_at: string
+          detail: string
+          id: string
+          kind: string
+        }
+        Insert: {
+          actor?: string | null
+          auction_id: string
+          created_at?: string
+          detail: string
+          id?: string
+          kind: string
+        }
+        Update: {
+          actor?: string | null
+          auction_id?: string
+          created_at?: string
+          detail?: string
+          id?: string
+          kind?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auction_events_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      auction_items: {
+        Row: {
+          added_items: number
+          auction_id: string
+          created_at: string
+          id: string
+          item_name: string
+          max_per_bidder: number
+          position: number
+        }
+        Insert: {
+          added_items?: number
+          auction_id: string
+          created_at?: string
+          id?: string
+          item_name: string
+          max_per_bidder?: number
+          position?: number
+        }
+        Update: {
+          added_items?: number
+          auction_id?: string
+          created_at?: string
+          id?: string
+          item_name?: string
+          max_per_bidder?: number
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auction_items_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      auction_participants: {
+        Row: {
+          auction_id: string
+          created_at: string
+          dropped: boolean
+          id: string
+          ign: string
+          member_id: string | null
+          needs_reconciliation: boolean
+          tickets: number
+        }
+        Insert: {
+          auction_id: string
+          created_at?: string
+          dropped?: boolean
+          id?: string
+          ign: string
+          member_id?: string | null
+          needs_reconciliation?: boolean
+          tickets?: number
+        }
+        Update: {
+          auction_id?: string
+          created_at?: string
+          dropped?: boolean
+          id?: string
+          ign?: string
+          member_id?: string | null
+          needs_reconciliation?: boolean
+          tickets?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auction_participants_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_participants_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      auctions: {
+        Row: {
+          auction_date: string
+          auction_type: Database["public"]["Enums"]["auction_type"]
+          created_at: string
+          id: string
+          name: string
+          pointer: number
+          status: Database["public"]["Enums"]["auction_status"]
+          updated_at: string
+        }
+        Insert: {
+          auction_date?: string
+          auction_type?: Database["public"]["Enums"]["auction_type"]
+          created_at?: string
+          id?: string
+          name: string
+          pointer?: number
+          status?: Database["public"]["Enums"]["auction_status"]
+          updated_at?: string
+        }
+        Update: {
+          auction_date?: string
+          auction_type?: Database["public"]["Enums"]["auction_type"]
+          created_at?: string
+          id?: string
+          name?: string
+          pointer?: number
+          status?: Database["public"]["Enums"]["auction_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       guild_settings: {
         Row: {
           created_at: string
@@ -144,7 +384,10 @@ export type Database = {
       }
     }
     Enums: {
+      allocation_status: "valid" | "warning" | "error" | "superseded"
       app_role: "admin"
+      auction_status: "open" | "finalized" | "amended"
+      auction_type: "guild_league" | "emperium_overrun" | "standard"
       job_class:
         | "Lord Knight"
         | "Paladin"
@@ -291,7 +534,10 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      allocation_status: ["valid", "warning", "error", "superseded"],
       app_role: ["admin"],
+      auction_status: ["open", "finalized", "amended"],
+      auction_type: ["guild_league", "emperium_overrun", "standard"],
       job_class: [
         "Lord Knight",
         "Paladin",
