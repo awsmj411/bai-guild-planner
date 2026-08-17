@@ -99,6 +99,19 @@ function GuildPage() {
       if (overId === "roster") {
         if (!assignedIds.has(memberId)) return;
         await doUnassign({ data: { memberId } });
+      } else if (overId.startsWith("row:")) {
+        const targetId = overId.slice(4);
+        if (targetId === memberId) return;
+        const ordered = [...members]
+          .filter((m) => m.status === "active")
+          .sort((a, b) => a.sort_order - b.sort_order || a.name.localeCompare(b.name))
+          .map((m) => m.id);
+        const from = ordered.indexOf(memberId);
+        const to = ordered.indexOf(targetId);
+        if (from < 0 || to < 0) return;
+        ordered.splice(from, 1);
+        ordered.splice(to, 0, memberId);
+        await doReorder({ data: { ids: ordered } });
       } else if (overId.startsWith("slot:")) {
         const [, section, team, slot] = overId.split(":");
         await doAssign({
@@ -135,6 +148,56 @@ function GuildPage() {
       toast.error("Could not delete members.");
     }
   }
+
+  async function handleEdit(input: {
+    id: string;
+    name: string;
+    job_class: JobClass;
+    join_date: string | null;
+  }) {
+    try {
+      await doUpdate({ data: input });
+      await refresh();
+      toast.success("Member updated.");
+    } catch {
+      toast.error("Could not update that member.");
+    }
+  }
+
+  async function handleRemove(input: { id: string; reason: RemovalReason }) {
+    try {
+      await doRemove({ data: input });
+      await refresh();
+      toast.success("Member moved to Removed.");
+    } catch {
+      toast.error("Could not remove that member.");
+    }
+  }
+
+  async function handleReactivate(id: string) {
+    try {
+      const res = await doReactivate({ data: { id } });
+      await refresh();
+      toast.success(
+        res.rule === "reassign"
+          ? "Reactivated at their previous roster position."
+          : "Reactivated at the bottom of the roster with a new join date.",
+      );
+    } catch {
+      toast.error("Could not reactivate that member.");
+    }
+  }
+
+  async function handleRestrictionHours(hours: number) {
+    try {
+      await doSettings({ data: { hours } });
+      await refresh();
+      toast.success("Restriction period updated.");
+    } catch {
+      toast.error("Could not update the setting.");
+    }
+  }
+
 
   async function signOut() {
     await queryClient.cancelQueries();
