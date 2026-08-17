@@ -14,24 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      guild_settings: {
+        Row: {
+          created_at: string
+          id: boolean
+          new_member_restriction_hours: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: boolean
+          new_member_restriction_hours?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: boolean
+          new_member_restriction_hours?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       members: {
         Row: {
           created_at: string
           id: string
           job_class: Database["public"]["Enums"]["job_class"]
+          join_date: string | null
           name: string
+          position_at_removal: number | null
+          removal_reason: Database["public"]["Enums"]["removal_reason"] | null
+          removed_at: string | null
+          restriction_lifted_at: string | null
+          sort_order: number
+          status: Database["public"]["Enums"]["member_status"]
         }
         Insert: {
           created_at?: string
           id?: string
           job_class: Database["public"]["Enums"]["job_class"]
+          join_date?: string | null
           name: string
+          position_at_removal?: number | null
+          removal_reason?: Database["public"]["Enums"]["removal_reason"] | null
+          removed_at?: string | null
+          restriction_lifted_at?: string | null
+          sort_order?: number
+          status?: Database["public"]["Enums"]["member_status"]
         }
         Update: {
           created_at?: string
           id?: string
           job_class?: Database["public"]["Enums"]["job_class"]
+          join_date?: string | null
           name?: string
+          position_at_removal?: number | null
+          removal_reason?: Database["public"]["Enums"]["removal_reason"] | null
+          removed_at?: string | null
+          restriction_lifted_at?: string | null
+          sort_order?: number
+          status?: Database["public"]["Enums"]["member_status"]
         }
         Relationships: []
       }
@@ -119,7 +161,9 @@ export type Database = {
         | "Gunslinger"
         | "Stalker"
         | "Assassin Cross"
+      member_status: "active" | "removed"
       raid_section: "elite" | "sub"
+      removal_reason: "rejoin" | "reassign" | "rejected" | "mia"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -265,7 +309,9 @@ export const Constants = {
         "Stalker",
         "Assassin Cross",
       ],
+      member_status: ["active", "removed"],
       raid_section: ["elite", "sub"],
+      removal_reason: ["rejoin", "reassign", "rejected", "mia"],
     },
   },
 } as const
