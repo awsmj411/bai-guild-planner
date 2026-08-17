@@ -15,14 +15,20 @@ import {
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { SECTIONS, type JobClass, type Member } from "@/lib/guild";
+import { SECTIONS, type JobClass, type Member, type RemovalReason } from "@/lib/guild";
 import {
   addMembers,
   assignMember,
   deleteMembers,
   getGuildData,
+  reactivateMember,
+  removeMember,
+  reorderMembers,
   unassignMember,
+  updateGuildSettings,
+  updateMember,
 } from "@/lib/guild.functions";
+
 import { RosterSidebar } from "@/components/guild/RosterSidebar";
 import { PartyBoard, MemberCard } from "@/components/guild/PartyBoard";
 import { AddMembersPanel } from "@/components/guild/AddMembersPanel";
