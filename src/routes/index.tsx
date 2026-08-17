@@ -248,22 +248,29 @@ function GuildPage() {
 
       <DndContext
         sensors={sensors}
+        autoScroll={{ enabled: true, threshold: { x: 0, y: 0.22 }, acceleration: 12 }}
         onDragStart={(e: DragStartEvent) => setDraggingId(String(e.active.id))}
         onDragCancel={() => setDraggingId(null)}
         onDragEnd={handleDragEnd}
       >
 
-        <main className="mx-auto flex max-w-[1500px] flex-col gap-4 px-4 py-4 lg:flex-row">
+        <main className="mx-auto flex max-w-[1500px] flex-col items-start gap-4 px-4 py-4 lg:flex-row">
           <RosterSidebar
             members={members}
             assignedIds={assignedIds}
             isAdmin={isAdmin}
             includeAssigned={includeAssigned}
+            restrictionHours={data?.settings.new_member_restriction_hours ?? 96}
             onIncludeAssignedChange={setIncludeAssigned}
             onDelete={handleDelete}
+            onEdit={handleEdit}
+            onRemove={handleRemove}
+            onReactivate={handleReactivate}
+            onRestrictionHoursChange={handleRestrictionHours}
           >
             <AddMembersPanel existingNames={members.map((m) => m.name)} onSubmit={handleAdd} />
           </RosterSidebar>
+
 
           <div className="flex min-w-0 flex-1 flex-col gap-5">
             {SECTIONS.map((s) => (
