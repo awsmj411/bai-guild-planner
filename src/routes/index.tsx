@@ -65,6 +65,12 @@ function GuildPage() {
   const doDelete = useServerFn(deleteMembers);
   const doAssign = useServerFn(assignMember);
   const doUnassign = useServerFn(unassignMember);
+  const doReorder = useServerFn(reorderMembers);
+  const doUpdate = useServerFn(updateMember);
+  const doRemove = useServerFn(removeMember);
+  const doReactivate = useServerFn(reactivateMember);
+  const doSettings = useServerFn(updateGuildSettings);
+
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
