@@ -15,14 +15,20 @@ import {
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { SECTIONS, type JobClass, type Member } from "@/lib/guild";
+import { SECTIONS, type JobClass, type Member, type RemovalReason } from "@/lib/guild";
 import {
   addMembers,
   assignMember,
   deleteMembers,
   getGuildData,
+  reactivateMember,
+  removeMember,
+  reorderMembers,
   unassignMember,
+  updateGuildSettings,
+  updateMember,
 } from "@/lib/guild.functions";
+
 import { RosterSidebar } from "@/components/guild/RosterSidebar";
 import { PartyBoard, MemberCard } from "@/components/guild/PartyBoard";
 import { AddMembersPanel } from "@/components/guild/AddMembersPanel";
@@ -59,6 +65,12 @@ function GuildPage() {
   const doDelete = useServerFn(deleteMembers);
   const doAssign = useServerFn(assignMember);
   const doUnassign = useServerFn(unassignMember);
+  const doReorder = useServerFn(reorderMembers);
+  const doUpdate = useServerFn(updateMember);
+  const doRemove = useServerFn(removeMember);
+  const doReactivate = useServerFn(reactivateMember);
+  const doSettings = useServerFn(updateGuildSettings);
+
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
@@ -99,6 +111,19 @@ function GuildPage() {
       if (overId === "roster") {
         if (!assignedIds.has(memberId)) return;
         await doUnassign({ data: { memberId } });
+      } else if (overId.startsWith("row:")) {
+        const targetId = overId.slice(4);
+        if (targetId === memberId) return;
+        const ordered = [...members]
+          .filter((m) => m.status === "active")
+          .sort((a, b) => a.sort_order - b.sort_order || a.name.localeCompare(b.name))
+          .map((m) => m.id);
+        const from = ordered.indexOf(memberId);
+        const to = ordered.indexOf(targetId);
+        if (from < 0 || to < 0) return;
+        ordered.splice(from, 1);
+        ordered.splice(to, 0, memberId);
+        await doReorder({ data: { ids: ordered } });
       } else if (overId.startsWith("slot:")) {
         const [, section, team, slot] = overId.split(":");
         await doAssign({
@@ -135,6 +160,56 @@ function GuildPage() {
       toast.error("Could not delete members.");
     }
   }
+
+  async function handleEdit(input: {
+    id: string;
+    name: string;
+    job_class: JobClass;
+    join_date: string | null;
+  }) {
+    try {
+      await doUpdate({ data: input });
+      await refresh();
+      toast.success("Member updated.");
+    } catch {
+      toast.error("Could not update that member.");
+    }
+  }
+
+  async function handleRemove(input: { id: string; reason: RemovalReason }) {
+    try {
+      await doRemove({ data: input });
+      await refresh();
+      toast.success("Member moved to Removed.");
+    } catch {
+      toast.error("Could not remove that member.");
+    }
+  }
+
+  async function handleReactivate(id: string) {
+    try {
+      const res = await doReactivate({ data: { id } });
+      await refresh();
+      toast.success(
+        res.rule === "reassign"
+          ? "Reactivated at their previous roster position."
+          : "Reactivated at the bottom of the roster with a new join date.",
+      );
+    } catch {
+      toast.error("Could not reactivate that member.");
+    }
+  }
+
+  async function handleRestrictionHours(hours: number) {
+    try {
+      await doSettings({ data: { hours } });
+      await refresh();
+      toast.success("Restriction period updated.");
+    } catch {
+      toast.error("Could not update the setting.");
+    }
+  }
+
 
   async function signOut() {
     await queryClient.cancelQueries();
@@ -173,22 +248,29 @@ function GuildPage() {
 
       <DndContext
         sensors={sensors}
+        autoScroll={{ enabled: true, threshold: { x: 0, y: 0.22 }, acceleration: 12 }}
         onDragStart={(e: DragStartEvent) => setDraggingId(String(e.active.id))}
         onDragCancel={() => setDraggingId(null)}
         onDragEnd={handleDragEnd}
       >
 
-        <main className="mx-auto flex max-w-[1500px] flex-col gap-4 px-4 py-4 lg:flex-row">
+        <main className="mx-auto flex max-w-[1500px] flex-col items-start gap-4 px-4 py-4 lg:flex-row">
           <RosterSidebar
             members={members}
             assignedIds={assignedIds}
             isAdmin={isAdmin}
             includeAssigned={includeAssigned}
+            restrictionHours={data?.settings.new_member_restriction_hours ?? 96}
             onIncludeAssignedChange={setIncludeAssigned}
             onDelete={handleDelete}
+            onEdit={handleEdit}
+            onRemove={handleRemove}
+            onReactivate={handleReactivate}
+            onRestrictionHoursChange={handleRestrictionHours}
           >
             <AddMembersPanel existingNames={members.map((m) => m.name)} onSubmit={handleAdd} />
           </RosterSidebar>
+
 
           <div className="flex min-w-0 flex-1 flex-col gap-5">
             {SECTIONS.map((s) => (
