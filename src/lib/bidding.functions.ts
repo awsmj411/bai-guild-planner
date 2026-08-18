@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import type { Database } from "@/integrations/supabase/types";
 import {
   AUCTION_TYPES,
   buildQueue,
@@ -12,7 +13,7 @@ import {
   type AuctionItem,
   type Participant,
 } from "@/lib/bidding";
-import { publicClient, assertAdmin } from "@/lib/supabase-helpers.server";
+import { publicClient, assertAdmin, type Db } from "@/lib/supabase-helpers.server";
 
 const AUCTION_COLUMNS =
   "id, name, auction_type, auction_date, status, pointer, queue_locked, cycle_number, created_at";
@@ -72,7 +73,7 @@ const itemInput = z.object({
 });
 
 async function logEvent(
-  supabase: { from: (t: "auction_events") => { insert: (rows: unknown) => PromiseLike<unknown> } },
+  supabase: Db,
   auctionId: string,
   kind: string,
   detail: string,
@@ -250,7 +251,7 @@ export const updateParticipant = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context.supabase, context.userId);
     const supabase = context.supabase;
-    const patch: Record<string, unknown> = {};
+    const patch: Database["public"]["Tables"]["auction_participants"]["Update"] = {};
     if (data.tickets != null) patch["tickets"] = data.tickets;
     if (data.dropped != null) patch["dropped"] = data.dropped;
 
@@ -378,7 +379,7 @@ export const updateAllocation = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context.supabase, context.userId);
-    const patch: Record<string, unknown> = {};
+    const patch: Database["public"]["Tables"]["allocations"]["Update"] = {};
     if (data.quantity != null) patch["quantity"] = data.quantity;
     if (data.ign != null) patch["ign"] = data.ign;
     if (data.flag_note !== undefined) patch["flag_note"] = data.flag_note;
