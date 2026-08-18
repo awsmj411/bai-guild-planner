@@ -13,7 +13,7 @@ import {
 } from "@/lib/guild";
 
 const MEMBER_COLUMNS =
-  "id, name, job_class, sort_order, join_date, status, removal_reason, removed_at, position_at_removal, restriction_lifted_at";
+  "id, name, job_class, sort_order, join_date, status, removal_reason, removed_at, position_at_removal, restriction_lifted_at, cycle_bid_at, cycle_bid_number";
 
 function publicClient() {
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
@@ -44,14 +44,14 @@ export const getGuildData = createServerFn({ method: "GET" }).handler(async () =
   const [members, assignments, settings] = await Promise.all([
     supabase.from("members").select(MEMBER_COLUMNS).order("sort_order").order("name"),
     supabase.from("party_assignments").select("id, section, team_index, slot_index, member_id"),
-    supabase.from("guild_settings").select("new_member_restriction_hours").maybeSingle(),
+    supabase.from("guild_settings").select("new_member_restriction_hours, current_cycle").maybeSingle(),
   ]);
   if (members.error) throw members.error;
   if (assignments.error) throw assignments.error;
   return {
     members: (members.data ?? []) as Member[],
     assignments: (assignments.data ?? []) as Assignment[],
-    settings: (settings.data ?? { new_member_restriction_hours: 96 }) as GuildSettings,
+    settings: (settings.data ?? { new_member_restriction_hours: 96, current_cycle: 1 }) as GuildSettings,
   };
 });
 
@@ -195,7 +195,7 @@ export const reactivateMember = createServerFn({ method: "POST" })
       .order("sort_order", { ascending: false })
       .limit(1)
       .maybeSingle();
-    const today = new Date().toISOString().slice(0, 10);
+    const now = new Date().toISOString();
     const { error } = await context.supabase
       .from("members")
       .update({
@@ -204,8 +204,10 @@ export const reactivateMember = createServerFn({ method: "POST" })
         removed_at: null,
         position_at_removal: null,
         sort_order: (last?.sort_order ?? 0) + 1,
-        join_date: today,
+        join_date: now,
         restriction_lifted_at: null,
+        cycle_bid_at: null,
+        cycle_bid_number: null,
       })
       .eq("id", data.id);
     if (error) throw error;
