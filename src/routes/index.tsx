@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -234,6 +234,11 @@ function GuildPage() {
             </p>
           </div>
 
+          <div className="flex items-center gap-2">
+          <nav className="flex items-center gap-1 rounded-full bg-black/20 p-1">
+            <Link to="/" className="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors hover:bg-white/10 data-[status=active]:bg-primary data-[status=active]:text-primary-foreground">Roster &amp; Parties</Link>
+            <Link to="/bidding" className="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors hover:bg-white/10">Bidding</Link>
+          </nav>
           {isAdmin ? (
             <Button size="sm" variant="secondary" onClick={signOut}>
               Sign out
@@ -243,6 +248,7 @@ function GuildPage() {
               Sign in
             </Button>
           )}
+          </div>
         </div>
       </header>
 

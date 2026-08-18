@@ -26,6 +26,7 @@ export type Database = {
           quantity: number
           queue_index: number
           status: Database["public"]["Enums"]["allocation_status"]
+          superseded_actor: string | null
           superseded_at: string | null
           superseded_reason:
             | Database["public"]["Enums"]["removal_reason"]
@@ -44,6 +45,7 @@ export type Database = {
           quantity?: number
           queue_index?: number
           status?: Database["public"]["Enums"]["allocation_status"]
+          superseded_actor?: string | null
           superseded_at?: string | null
           superseded_reason?:
             | Database["public"]["Enums"]["removal_reason"]
@@ -62,6 +64,7 @@ export type Database = {
           quantity?: number
           queue_index?: number
           status?: Database["public"]["Enums"]["allocation_status"]
+          superseded_actor?: string | null
           superseded_at?: string | null
           superseded_reason?:
             | Database["public"]["Enums"]["removal_reason"]
@@ -182,6 +185,7 @@ export type Database = {
           ign: string
           member_id: string | null
           needs_reconciliation: boolean
+          queue_position: number
           tickets: number
         }
         Insert: {
@@ -192,6 +196,7 @@ export type Database = {
           ign: string
           member_id?: string | null
           needs_reconciliation?: boolean
+          queue_position?: number
           tickets?: number
         }
         Update: {
@@ -202,6 +207,7 @@ export type Database = {
           ign?: string
           member_id?: string | null
           needs_reconciliation?: boolean
+          queue_position?: number
           tickets?: number
         }
         Relationships: [
@@ -226,9 +232,11 @@ export type Database = {
           auction_date: string
           auction_type: Database["public"]["Enums"]["auction_type"]
           created_at: string
+          cycle_number: number
           id: string
           name: string
           pointer: number
+          queue_locked: boolean
           status: Database["public"]["Enums"]["auction_status"]
           updated_at: string
         }
@@ -236,9 +244,11 @@ export type Database = {
           auction_date?: string
           auction_type?: Database["public"]["Enums"]["auction_type"]
           created_at?: string
+          cycle_number?: number
           id?: string
           name: string
           pointer?: number
+          queue_locked?: boolean
           status?: Database["public"]["Enums"]["auction_status"]
           updated_at?: string
         }
@@ -246,9 +256,11 @@ export type Database = {
           auction_date?: string
           auction_type?: Database["public"]["Enums"]["auction_type"]
           created_at?: string
+          cycle_number?: number
           id?: string
           name?: string
           pointer?: number
+          queue_locked?: boolean
           status?: Database["public"]["Enums"]["auction_status"]
           updated_at?: string
         }
@@ -257,18 +269,21 @@ export type Database = {
       guild_settings: {
         Row: {
           created_at: string
+          current_cycle: number
           id: boolean
           new_member_restriction_hours: number
           updated_at: string
         }
         Insert: {
           created_at?: string
+          current_cycle?: number
           id?: boolean
           new_member_restriction_hours?: number
           updated_at?: string
         }
         Update: {
           created_at?: string
+          current_cycle?: number
           id?: boolean
           new_member_restriction_hours?: number
           updated_at?: string
@@ -278,6 +293,8 @@ export type Database = {
       members: {
         Row: {
           created_at: string
+          cycle_bid_at: string | null
+          cycle_bid_number: number | null
           id: string
           job_class: Database["public"]["Enums"]["job_class"]
           join_date: string | null
@@ -291,6 +308,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          cycle_bid_at?: string | null
+          cycle_bid_number?: number | null
           id?: string
           job_class: Database["public"]["Enums"]["job_class"]
           join_date?: string | null
@@ -304,6 +323,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          cycle_bid_at?: string | null
+          cycle_bid_number?: number | null
           id?: string
           job_class?: Database["public"]["Enums"]["job_class"]
           join_date?: string | null
@@ -406,7 +427,12 @@ export type Database = {
         | "Assassin Cross"
       member_status: "active" | "removed"
       raid_section: "elite" | "sub"
-      removal_reason: "rejoin" | "reassign" | "rejected" | "mia"
+      removal_reason:
+        | "rejoin"
+        | "reassign"
+        | "rejected"
+        | "mia"
+        | "expelled_left"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -557,7 +583,13 @@ export const Constants = {
       ],
       member_status: ["active", "removed"],
       raid_section: ["elite", "sub"],
-      removal_reason: ["rejoin", "reassign", "rejected", "mia"],
+      removal_reason: [
+        "rejoin",
+        "reassign",
+        "rejected",
+        "mia",
+        "expelled_left",
+      ],
     },
   },
 } as const

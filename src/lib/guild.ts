@@ -73,7 +73,13 @@ export const ADMIN_USERNAME = "adminbai";
 export const ADMIN_EMAIL = `${ADMIN_USERNAME}@bai-guild.local`;
 
 export type MemberStatus = "active" | "removed";
-export const REMOVAL_REASONS = ["rejoin", "reassign", "rejected", "mia"] as const;
+export const REMOVAL_REASONS = [
+  "rejoin",
+  "reassign",
+  "rejected",
+  "mia",
+  "expelled_left",
+] as const;
 export type RemovalReason = (typeof REMOVAL_REASONS)[number];
 
 export const REMOVAL_REASON_LABELS: Record<RemovalReason, string> = {
@@ -81,14 +87,22 @@ export const REMOVAL_REASON_LABELS: Record<RemovalReason, string> = {
   reassign: "Reassign",
   rejected: "Rejected to bid",
   mia: "MIA",
+  expelled_left: "Expelled / Left",
 };
 
 export const REMOVAL_REASON_RULES: Record<RemovalReason, string> = {
-  rejoin: "On return: bottom of roster, join date reset (tenure restarts).",
-  reassign: "On return: restored to previous roster position, join date unchanged.",
-  rejected: "On return: bottom of roster, join date reset (tenure restarts).",
-  mia: "On return: bottom of roster, join date reset (tenure restarts).",
+  rejoin: "On return: bottom of roster, join date reset (tenure restarts), bidding cycle standing cleared.",
+  reassign: "On return: restored to previous roster position, join date unchanged, bidding cycle standing kept.",
+  rejected: "On return: bottom of roster, join date reset (tenure restarts), bidding cycle standing cleared.",
+  mia: "On return: bottom of roster, join date reset (tenure restarts), bidding cycle standing cleared.",
+  expelled_left:
+    "On return: bottom of roster, join date reset (tenure restarts), bidding cycle standing cleared.",
 };
+
+/** Reasons whose re-entry rule resets position, join date and cycle standing. */
+export function isResetReason(reason: RemovalReason): boolean {
+  return reason !== "reassign";
+}
 
 export type Member = {
   id: string;
@@ -101,9 +115,14 @@ export type Member = {
   removed_at: string | null;
   position_at_removal: number | null;
   restriction_lifted_at: string | null;
+  cycle_bid_at: string | null;
+  cycle_bid_number: number | null;
 };
 
-export type GuildSettings = { new_member_restriction_hours: number };
+export type GuildSettings = {
+  new_member_restriction_hours: number;
+  current_cycle: number;
+};
 
 /** Auction types that apply the new-member restriction gate. */
 export const TENURE_GATED_AUCTIONS = ["guild_league", "emperium_overrun"] as const;
@@ -112,13 +131,30 @@ export const TENURE_GATED_AUCTIONS = ["guild_league", "emperium_overrun"] as con
 export function restrictionLiftsAt(member: Member, hours: number): Date | null {
   if (member.restriction_lifted_at) return null;
   if (!member.join_date) return null;
-  return new Date(new Date(`${member.join_date}T00:00:00Z`).getTime() + hours * 3_600_000);
+  return new Date(new Date(member.join_date).getTime() + hours * 3_600_000);
 }
 
 /** True when the member may join a tenure-gated auction at `at`. */
 export function isTenureEligible(member: Member, hours: number, at: Date = new Date()): boolean {
   const lifts = restrictionLiftsAt(member, hours);
   return !lifts || at.getTime() >= lifts.getTime();
+}
+
+/** True when the member has already bid in the guild's current fair-rotation cycle. */
+export function hasBidThisCycle(member: Member, currentCycle: number): boolean {
+  return member.cycle_bid_number != null && member.cycle_bid_number === currentCycle;
+}
+
+export function formatJoinDate(value: string | null): string {
+  if (!value) return "—";
+  const d = new Date(value);
+  return d.toLocaleString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 export type Assignment = {
