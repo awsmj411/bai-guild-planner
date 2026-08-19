@@ -243,3 +243,38 @@
   }
 }
 
+/* Panels that scroll inside themselves instead of stretching the page. */
+@utility scroll-panel {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--foreground) 22%, transparent) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--foreground) 22%, transparent);
+    border-radius: 999px;
+  }
+}
+
+@utility route-fade {
+  animation: route-fade 220ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+@keyframes route-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
