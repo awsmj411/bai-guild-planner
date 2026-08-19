@@ -72,8 +72,78 @@
 
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --radius: 0.5rem;
+  /* Light palette derived from the BAI logo: forest green + lime on warm paper */
+  --background: oklch(0.985 0.006 120);
+  --foreground: oklch(0.24 0.03 150);
+  --guild-bar: oklch(0.52 0.13 140);
+  --guild-bar-foreground: oklch(0.99 0.02 118);
+  --guild-team: oklch(0.36 0.07 150);
+  --guild-team-foreground: oklch(0.97 0.03 115);
+  --guild-slot: oklch(0.965 0.008 140);
+  --guild-slot-border: oklch(0.88 0.015 145);
+  --guild-surface: oklch(1 0 0);
+
+  --shadow-elegant: 0 1px 2px oklch(0.3 0.03 150 / 0.08), 0 8px 24px -16px oklch(0.3 0.03 150 / 0.22);
+  --shadow-lift: 0 12px 30px -12px oklch(0.3 0.03 150 / 0.28);
+
+  /* First-job accent hues */
+  --job-swordsman: oklch(0.55 0.18 25);
+  --job-thief: oklch(0.52 0.17 300);
+  --job-merchant: oklch(0.6 0.15 75);
+  --job-archer: oklch(0.56 0.16 140);
+  --job-magician: oklch(0.53 0.17 260);
+  --job-acolyte: oklch(0.62 0.12 90);
+  --job-doram: oklch(0.58 0.16 350);
+  --job-gunslinger: oklch(0.54 0.11 210);
+
+  /* Bid-grid item hues — one per auction item, cycled in setup order */
+  --item-1: oklch(0.55 0.19 300);
+  --item-2: oklch(0.72 0.15 90);
+  --item-3: oklch(0.6 0.15 230);
+  --item-4: oklch(0.62 0.16 350);
+  --item-5: oklch(0.58 0.15 160);
+  --item-6: oklch(0.6 0.17 40);
+  --item-7: oklch(0.52 0.14 275);
+  --item-8: oklch(0.6 0.13 195);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.03 150);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.03 150);
+  --primary: oklch(0.55 0.14 140);
+  --primary-foreground: oklch(0.99 0.02 118);
+
+  --secondary: oklch(0.945 0.015 140);
+  --secondary-foreground: oklch(0.3 0.04 150);
+  --muted: oklch(0.955 0.01 140);
+  --muted-foreground: oklch(0.5 0.02 150);
+  --accent: oklch(0.93 0.04 130);
+  --accent-foreground: oklch(0.3 0.05 145);
+  --destructive: oklch(0.58 0.2 25);
+  --destructive-foreground: oklch(0.99 0.01 250);
+  --border: oklch(0.9 0.012 145);
+  --input: oklch(0.9 0.012 145);
+
+  --ring: oklch(0.55 0.14 140);
+  --chart-1: oklch(0.55 0.14 140);
+  --chart-2: oklch(0.62 0.11 148);
+  --chart-3: oklch(0.7 0.13 135);
+  --chart-4: oklch(0.75 0.17 84);
+  --chart-5: oklch(0.6 0.05 145);
+  --sidebar: oklch(0.975 0.008 140);
+  --sidebar-foreground: oklch(0.24 0.03 150);
+  --sidebar-primary: oklch(0.55 0.14 140);
+  --sidebar-primary-foreground: oklch(0.99 0.02 118);
+  --sidebar-accent: oklch(0.93 0.04 130);
+  --sidebar-accent-foreground: oklch(0.3 0.05 145);
+  --sidebar-border: oklch(0.9 0.012 145);
+  --sidebar-ring: oklch(0.55 0.14 140);
+}
+
+.dark {
+  color-scheme: dark;
   /* Dark palette derived from the BAI logo: lime accent on deep forest charcoal */
   --background: oklch(0.19 0.021 150);
   --foreground: oklch(0.955 0.014 110);
@@ -97,6 +167,15 @@
   --job-acolyte: oklch(0.86 0.09 95);
   --job-doram: oklch(0.74 0.14 350);
   --job-gunslinger: oklch(0.72 0.11 200);
+
+  --item-1: oklch(0.7 0.16 300);
+  --item-2: oklch(0.86 0.13 92);
+  --item-3: oklch(0.72 0.13 230);
+  --item-4: oklch(0.74 0.14 350);
+  --item-5: oklch(0.75 0.13 160);
+  --item-6: oklch(0.76 0.15 45);
+  --item-7: oklch(0.68 0.14 275);
+  --item-8: oklch(0.74 0.11 195);
 
   --card: oklch(0.245 0.026 150);
   --card-foreground: oklch(0.955 0.014 110);
@@ -130,8 +209,8 @@
   --sidebar-accent-foreground: oklch(0.95 0.02 112);
   --sidebar-border: oklch(0.33 0.028 150);
   --sidebar-ring: oklch(0.8 0.16 118);
-
 }
+
 
 
 @layer base {
@@ -163,4 +242,39 @@
       transform 180ms ease;
   }
 }
+
+/* Panels that scroll inside themselves instead of stretching the page. */
+@utility scroll-panel {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--foreground) 22%, transparent) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--foreground) 22%, transparent);
+    border-radius: 999px;
+  }
+}
+
+@utility route-fade {
+  animation: route-fade 220ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+@keyframes route-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 
