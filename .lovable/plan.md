@@ -12,12 +12,12 @@ The results section gains a spreadsheet-style grid that mirrors the game UI you 
 | Row 4   | Meaty  | Meck   | Yvonx  |     |
 ```
 
-- Every allocated slot for an item is laid out in order, filled top-to-bottom, 4 rows per page column, wrapping into Page 1, 2, 3 ... as needed.
+- One continuous grid for the whole auction: every allocated slot, item by item in setup order, fills top-to-bottom 4 rows per page column, wrapping into Page 1, 2, 3 ... as needed. A page can therefore hold rows from two different items (e.g. Rows 1-2 Puppet Fragment, Rows 3-4 Light & Dark Feathers), exactly like your sheet.
+- Each cell is tinted by the item being bid on, and every item keeps that one color everywhere it appears in the grid (Puppet Fragment purple, Light & Dark Feathers light yellow, etc.). Colors are assigned per item from a fixed distinct palette; a legend above the grid maps color to item name so members reading the share view know what each block is for.
 - The table is chunked into blocks of 10 pages stacked vertically, exactly like the screenshot, each block with its own dark header row.
-- Alternating soft tint bands per page block for readability (no class colors here — purely grouping).
-- One grid per item, with the item name, slot count and quantity checks above it.
 - Admins can click any cell to swap the bidder in that slot from a roster picker; guests see it read-only. Swaps go through the existing audited allocation update path.
 - Horizontal scroll inside each block so long auctions never stretch the page.
+
 
 ## Navigation and theme
 
