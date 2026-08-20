@@ -56,8 +56,9 @@ export function QueuePanel({
   }
 
   return (
-    <section className="rounded-lg border border-border bg-card">
+    <section className="flex min-h-0 flex-col rounded-lg border border-border bg-card">
       <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-3 py-2">
+
         <div>
           <h2 className="text-sm font-semibold">Bidder queue</h2>
           <p className="text-xs text-muted-foreground">
