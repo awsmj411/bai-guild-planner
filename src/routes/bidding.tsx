@@ -140,19 +140,20 @@ function BiddingPage() {
   const checks = useMemo(() => itemChecks(items, allocations), [items, allocations]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex h-screen flex-col overflow-hidden bg-background">
       <GuildHeader isAdmin={isAdmin} tagline="Bidding & Fair Rotation" />
 
-      <main className="mx-auto flex max-w-[1500px] flex-col gap-4 px-4 py-4 lg:flex-row">
-        <aside className="w-full shrink-0 lg:w-64">
-          <div className="rounded-lg border border-border bg-card">
+      <main className="route-fade mx-auto flex w-full min-h-0 max-w-[1500px] flex-1 flex-col gap-4 px-4 py-4 lg:flex-row lg:overflow-hidden">
+        <aside className="flex w-full shrink-0 flex-col lg:w-64 lg:min-h-0">
+          <div className="flex min-h-0 flex-col rounded-lg border border-border bg-card">
             <header className="flex items-center justify-between border-b border-border px-3 py-2">
               <h2 className="text-sm font-semibold">Auctions</h2>
               <Badge variant="secondary" className="text-[10px]">
                 Cycle {auctions.data?.currentCycle ?? 1}
               </Badge>
             </header>
-            <ul className="max-h-[60vh] divide-y divide-border/60 overflow-y-auto">
+            <ul className="scroll-panel max-h-[40vh] divide-y divide-border/60 lg:max-h-none lg:flex-1">
+
               {(auctions.data?.auctions ?? []).map((a) => (
                 <li key={a.id}>
                   <button
