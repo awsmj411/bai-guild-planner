@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { GuildHeader, useIsAdmin } from "@/components/guild/GuildHeader";
 import { AuctionSetupDialog } from "@/components/bidding/AuctionSetupDialog";
 import { QueuePanel } from "@/components/bidding/QueuePanel";
+import { AllocationGrid } from "@/components/bidding/AllocationGrid";
 import { getGuildData } from "@/lib/guild.functions";
 import {
   AUCTION_TYPE_LABELS,
@@ -140,19 +141,20 @@ function BiddingPage() {
   const checks = useMemo(() => itemChecks(items, allocations), [items, allocations]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex h-screen flex-col overflow-hidden bg-background">
       <GuildHeader isAdmin={isAdmin} tagline="Bidding & Fair Rotation" />
 
-      <main className="mx-auto flex max-w-[1500px] flex-col gap-4 px-4 py-4 lg:flex-row">
-        <aside className="w-full shrink-0 lg:w-64">
-          <div className="rounded-lg border border-border bg-card">
+      <main className="route-fade mx-auto flex w-full min-h-0 max-w-[1500px] flex-1 flex-col gap-4 px-4 py-4 lg:flex-row lg:overflow-hidden">
+        <aside className="flex w-full shrink-0 flex-col lg:w-64 lg:min-h-0">
+          <div className="flex min-h-0 flex-col rounded-lg border border-border bg-card">
             <header className="flex items-center justify-between border-b border-border px-3 py-2">
               <h2 className="text-sm font-semibold">Auctions</h2>
               <Badge variant="secondary" className="text-[10px]">
                 Cycle {auctions.data?.currentCycle ?? 1}
               </Badge>
             </header>
-            <ul className="max-h-[60vh] divide-y divide-border/60 overflow-y-auto">
+            <ul className="scroll-panel max-h-[40vh] divide-y divide-border/60 lg:max-h-none lg:flex-1">
+
               {(auctions.data?.auctions ?? []).map((a) => (
                 <li key={a.id}>
                   <button
@@ -184,7 +186,7 @@ function BiddingPage() {
           </div>
         </aside>
 
-        <div className="flex-1 space-y-4">
+        <div className="scroll-panel flex-1 space-y-4 lg:pr-1">
           {!auction && (
             <p className="rounded-lg border border-border bg-card p-6 text-center text-sm text-muted-foreground">
               Select an auction to see its queue and results.
@@ -267,6 +269,35 @@ function BiddingPage() {
                   ))}
                 </dl>
               </section>
+
+              <section className="flex max-h-[70vh] min-h-0 flex-col rounded-lg border border-border bg-card">
+                <header className="border-b border-border px-3 py-2">
+                  <h2 className="text-sm font-semibold">Bidder assignment grid</h2>
+                  <p className="text-xs text-muted-foreground">
+                    Share view — 4 rows per page, coloured by item.
+                    {isAdmin ? " Click a name to swap the bidder in that slot." : ""}
+                  </p>
+                </header>
+                <div className="scroll-panel flex-1">
+                  <AllocationGrid
+                    items={items}
+                    allocations={allocations}
+                    isAdmin={isAdmin}
+                    memberNames={members.filter((m) => m.status === "active").map((m) => m.name)}
+                    onReplace={(allocationId, ign) =>
+                      guard(
+                        () =>
+                          doSupersede({
+                            data: { allocationId, reason: "reassign", replacementIgn: ign },
+                          }),
+                        "Slot swapped — original kept for audit",
+                      )
+                    }
+                  />
+                </div>
+              </section>
+
+
 
               <QueuePanel
                 participants={participants}
@@ -394,7 +425,7 @@ function BiddingPage() {
                 <header className="border-b border-border px-3 py-2">
                   <h2 className="text-sm font-semibold">Audit log</h2>
                 </header>
-                <ul className="max-h-56 divide-y divide-border/60 overflow-y-auto">
+                <ul className="scroll-panel max-h-56 divide-y divide-border/60">
                   {events.map((e) => (
                     <li key={e.id} className="px-3 py-2 text-xs">
                       <span className="font-medium">{e.kind}</span> — {e.detail}

@@ -134,9 +134,10 @@ export function PartyBoard({ title, section, assignments, membersById, isAdmin, 
 
   return (
     <section className="space-y-2.5">
-      <h2 className="rounded-lg bg-guild-bar px-3 py-2 text-center text-sm font-bold uppercase tracking-[0.18em] text-guild-bar-foreground shadow-elegant">
+      <h2 className="sticky top-0 z-20 rounded-lg bg-guild-bar px-3 py-2 text-center text-sm font-bold uppercase tracking-[0.18em] text-guild-bar-foreground shadow-elegant">
         {title}
       </h2>
+
       <div className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
         {Array.from({ length: TEAM_COUNT }, (_, teamIndex) => {
           const count = Array.from({ length: SLOT_COUNT }).filter((_, s) =>

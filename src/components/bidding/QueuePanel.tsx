@@ -56,8 +56,9 @@ export function QueuePanel({
   }
 
   return (
-    <section className="rounded-lg border border-border bg-card">
+    <section className="flex min-h-0 flex-col rounded-lg border border-border bg-card">
       <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-3 py-2">
+
         <div>
           <h2 className="text-sm font-semibold">Bidder queue</h2>
           <p className="text-xs text-muted-foreground">
@@ -98,7 +99,7 @@ export function QueuePanel({
         </div>
       )}
 
-      <ol className="divide-y divide-border/60">
+      <ol className="scroll-panel max-h-[46vh] divide-y divide-border/60">
         {ordered.map((p, index) => (
           <li key={p.id} className="flex flex-wrap items-center gap-2 px-3 py-2 text-sm">
             <span className="w-7 shrink-0 text-xs font-semibold tabular-nums text-muted-foreground">
