@@ -269,6 +269,35 @@ function BiddingPage() {
                 </dl>
               </section>
 
+              <section className="flex max-h-[70vh] min-h-0 flex-col rounded-lg border border-border bg-card">
+                <header className="border-b border-border px-3 py-2">
+                  <h2 className="text-sm font-semibold">Bidder assignment grid</h2>
+                  <p className="text-xs text-muted-foreground">
+                    Share view — 4 rows per page, coloured by item.
+                    {isAdmin ? " Click a name to swap the bidder in that slot." : ""}
+                  </p>
+                </header>
+                <div className="scroll-panel flex-1">
+                  <AllocationGrid
+                    items={items}
+                    allocations={allocations}
+                    isAdmin={isAdmin}
+                    memberNames={members.filter((m) => m.status === "active").map((m) => m.name)}
+                    onReplace={(allocationId, ign) =>
+                      guard(
+                        () =>
+                          doSupersede({
+                            data: { allocationId, reason: "reassign", replacementIgn: ign },
+                          }),
+                        "Slot swapped — original kept for audit",
+                      )
+                    }
+                  />
+                </div>
+              </section>
+
+
+
               <QueuePanel
                 participants={participants}
                 members={members}
