@@ -277,9 +277,10 @@ export function RosterSidebar({
     <aside
       ref={setNodeRef}
       className={cn(
-        "flex w-full flex-col gap-2 rounded-xl border border-border bg-sidebar/80 p-3 shadow-elegant backdrop-blur-sm transition-shadow lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:w-80 lg:shrink-0 lg:overflow-y-auto",
+        "scroll-panel flex w-full flex-col gap-2 self-stretch rounded-xl border border-border bg-sidebar/80 p-3 shadow-elegant backdrop-blur-sm transition-shadow lg:max-h-none lg:w-80 lg:shrink-0",
         isOver && "ring-2 ring-ring",
       )}
+
     >
       <div className="rounded-lg bg-guild-bar px-3 py-2 text-guild-bar-foreground">
         <div className="flex items-start justify-between gap-2">
