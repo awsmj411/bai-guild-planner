@@ -250,7 +250,7 @@ function GuildPage() {
           </RosterSidebar>
 
 
-          <div className="flex min-w-0 flex-1 flex-col gap-5">
+          <div className="scroll-panel flex min-w-0 flex-1 flex-col gap-5 self-stretch lg:pr-1">
             {SECTIONS.map((s) => (
               <PartyBoard
                 key={s.key}
