@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -13,7 +13,6 @@ import {
 } from "@dnd-kit/core";
 
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { SECTIONS, type JobClass, type Member, type RemovalReason } from "@/lib/guild";
 import {
@@ -33,7 +32,7 @@ import { RosterSidebar } from "@/components/guild/RosterSidebar";
 import { PartyBoard, MemberCard } from "@/components/guild/PartyBoard";
 import { AddMembersPanel } from "@/components/guild/AddMembersPanel";
 import { SignInDialog } from "@/components/guild/SignInDialog";
-import baiLogo from "@/assets/bai-logo.png.asset.json";
+import { GuildHeader } from "@/components/guild/GuildHeader";
 
 
 export const Route = createFileRoute("/")({
