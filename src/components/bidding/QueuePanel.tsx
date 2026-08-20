@@ -98,7 +98,7 @@ export function QueuePanel({
         </div>
       )}
 
-      <ol className="divide-y divide-border/60">
+      <ol className="scroll-panel max-h-[46vh] divide-y divide-border/60">
         {ordered.map((p, index) => (
           <li key={p.id} className="flex flex-wrap items-center gap-2 px-3 py-2 text-sm">
             <span className="w-7 shrink-0 text-xs font-semibold tabular-nums text-muted-foreground">
