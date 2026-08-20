@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { GuildHeader, useIsAdmin } from "@/components/guild/GuildHeader";
 import { AuctionSetupDialog } from "@/components/bidding/AuctionSetupDialog";
 import { QueuePanel } from "@/components/bidding/QueuePanel";
+import { AllocationGrid } from "@/components/bidding/AllocationGrid";
 import { getGuildData } from "@/lib/guild.functions";
 import {
   AUCTION_TYPE_LABELS,
@@ -424,7 +425,7 @@ function BiddingPage() {
                 <header className="border-b border-border px-3 py-2">
                   <h2 className="text-sm font-semibold">Audit log</h2>
                 </header>
-                <ul className="max-h-56 divide-y divide-border/60 overflow-y-auto">
+                <ul className="scroll-panel max-h-56 divide-y divide-border/60">
                   {events.map((e) => (
                     <li key={e.id} className="px-3 py-2 text-xs">
                       <span className="font-medium">{e.kind}</span> — {e.detail}
