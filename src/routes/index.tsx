@@ -219,48 +219,20 @@ function GuildPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-guild-team text-guild-team-foreground">
-        <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-3">
-            <h1 className="sr-only">BAI Guild Roster &amp; Raid Parties</h1>
-            <img
-              src={baiLogo.url}
-              alt="BAI Guild logo"
-              className="h-11 w-auto"
-            />
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] opacity-85">
-              Guild Roster &amp; Raid Parties
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-          <nav className="flex items-center gap-1 rounded-full bg-black/20 p-1">
-            <Link to="/" className="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors hover:bg-white/10 data-[status=active]:bg-primary data-[status=active]:text-primary-foreground">Roster &amp; Parties</Link>
-            <Link to="/bidding" className="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors hover:bg-white/10">Bidding</Link>
-          </nav>
-          {isAdmin ? (
-            <Button size="sm" variant="secondary" onClick={signOut}>
-              Sign out
-            </Button>
-          ) : (
-            <Button size="sm" variant="secondary" onClick={() => setSignInOpen(true)}>
-              Sign in
-            </Button>
-          )}
-          </div>
-        </div>
-      </header>
+    <div className="flex h-screen flex-col overflow-hidden bg-background">
+      <h1 className="sr-only">BAI Guild Roster &amp; Raid Parties</h1>
+      <GuildHeader isAdmin={isAdmin} tagline="Guild Roster & Raid Parties" onSignOut={signOut} />
 
       <DndContext
         sensors={sensors}
-        autoScroll={{ enabled: true, threshold: { x: 0, y: 0.22 }, acceleration: 12 }}
+        autoScroll={{ enabled: true, threshold: { x: 0.15, y: 0.22 }, acceleration: 12 }}
         onDragStart={(e: DragStartEvent) => setDraggingId(String(e.active.id))}
         onDragCancel={() => setDraggingId(null)}
         onDragEnd={handleDragEnd}
       >
 
-        <main className="mx-auto flex max-w-[1500px] flex-col items-start gap-4 px-4 py-4 lg:flex-row">
+        <main className="route-fade mx-auto flex w-full min-h-0 max-w-[1500px] flex-1 flex-col items-start gap-4 px-4 py-4 lg:flex-row lg:overflow-hidden">
+
           <RosterSidebar
             members={members}
             assignedIds={assignedIds}
