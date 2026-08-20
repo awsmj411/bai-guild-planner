@@ -185,7 +185,7 @@ function BiddingPage() {
           </div>
         </aside>
 
-        <div className="flex-1 space-y-4">
+        <div className="scroll-panel flex-1 space-y-4 lg:pr-1">
           {!auction && (
             <p className="rounded-lg border border-border bg-card p-6 text-center text-sm text-muted-foreground">
               Select an auction to see its queue and results.
